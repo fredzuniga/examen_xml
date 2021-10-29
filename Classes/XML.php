@@ -1,19 +1,17 @@
 <?php
+error_reporting (E_ALL ^ E_NOTICE);
 
-class XML
-{
+class XML{
 
     protected $atributos;
     protected $rules;
 
-    function __construct()
-    {
+    function __construct(){
         $this->atributos = array();
         $this->rules = array();
     }
 
-    protected function setSatFormat($value)
-    {
+    protected function setSatFormat($value){
         $aux = trim(strip_tags($value));
         if (!XML::isUtf8($aux)) {
             $aux = utf8_encode($aux);
@@ -34,8 +32,7 @@ class XML
     }
 
 
-    static function isUtf8($str)
-    {
+    static function isUtf8($str){
         return (bool)preg_match('%^(?:
                 [\x09\x0A\x0D\x20-\x7E]            # ASCII
             | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
@@ -49,22 +46,22 @@ class XML
     }
 
     //Resolver funcionalidad
-    private function setAtribute($attr, $value)
-    {
-        $this->atributos[] = ($attr != 'TipoDeComprobante') ? $this->setSatFormat($value) : $value;
+    // la función debe ser pública
+    public function setAtribute($attr, $value){
+        // el parametro attr no estaba indicado en los corchetes del array atributos
+        $this->atributos[$attr] = ($attr != 'TipoDeComprobante') ? $this->setSatFormat($value) : $value;
     }
 
-    function getAtributes()
-    {
-        $conenido = '';
+    function getAtributes(){
+        $contenido = '';
         foreach ($this->atributos as $key => $value) :
             if (($this->rules[$key] == 'R') && (strlen($this->atributos[$key]) <= 0)) :
                 throw new Exception('Atributo ' . $key . ' de ' . get_class($this) . ' es requerido por el SAT');
             else :
                 if ((($this->rules[$key] == 'O') || ($this->rules[$key] == 'R')) && (strlen($this->atributos[$key]) > 0))
-                    $conenido .= $key . '="' . $value . '" ';
+                    $contenido .= $key . '="' . $value . '" ';
             endif;
         endforeach;
-        return $conenido;
+        return $contenido;
     }
 }

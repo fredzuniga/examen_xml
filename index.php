@@ -22,22 +22,29 @@ class Main
             "RegimenFiscal" => "612"
         ]
     ];
-
-    protected function __construct()
-    {
+    // constructor público
+    public function __construct(){
         $this->cfdi_xml = new CFDI;
     }
 
-    final public static function createXML()
-    {
+    // el método no debe de ser estático
+    final public function createXML(){
          //Obtener el XML por medio de la clase XML
         foreach ($this->array_data as $key => $value) :
             if ($key != (string) 'Comprobante') :
                 foreach ($value as $attribute => $value) :
                 //Setear attributos
+                    $this->cfdi_xml->getEmisor()->setAtribute($attribute,$value);
+                endforeach;
+            else:
+                foreach ($value as $attribute => $value) :
+                    //Setear attributos
+                    $this->cfdi_xml->getComprobante()->setAtribute($attribute,$value);
                 endforeach;
             endif;
         endforeach;
+
+        echo $this->cfdi_xml->getNode();
     }
 }
 

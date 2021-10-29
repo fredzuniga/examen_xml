@@ -1,9 +1,7 @@
 <?php
 
-class Comprobante extends XML
-{
-    function __construct()
-    {
+class Comprobante extends XML{
+    function __construct(){
         $this->atributos = [];
         $this->atributos['Version'] = '3.3';
         $this->atributos['Serie'] = '';
@@ -48,5 +46,9 @@ class Comprobante extends XML
         $this->rules['SerieFolioFiscalOrig'] = 'O';
         $this->rules['FechaFolioFiscalOrig'] = 'O';
         $this->rules['MontoFolioFiscalOrig'] = 'O';
+    }
+
+    public function test(){
+        echo "test";
     }
 }
